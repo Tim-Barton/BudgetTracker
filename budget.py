@@ -16,7 +16,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     configFile = open(args.configFile)
-    categoryMap, configs = config.ParseConfig(configFile)
+    categoryMap, configs = config.ParseConfig(configFile.read())
 
     dataFile = open(args.dataFile)
-    spending.ParseSpending(dataFile, categoryMap, configs, "CSV")
+    spendList = spending.parseSpending(dataFile, configs, "CSV")
+    spending.collateSpending(spendList, categoryMap)

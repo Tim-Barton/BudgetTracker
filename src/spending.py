@@ -8,15 +8,25 @@ import src.dataParsers as dataParsers
 import re
 
 def matchRegexes(regexes, desc):
-    return list(filter(lambda x: re.match(x, desc) is not None, regexes))
+    return filter(lambda x: re.match(x, desc) is not None, regexes)
 
-def ParseSpending(dataFile, categoryMap, configs, dataType):
+def parseSpending(dataFile, configs, dataType):
     parser = dataParsers.parsers[dataType](dataFile)
     config = configs[dataType]
-    spendingMap = {}
+    spendList = []
     for element in parser:
         desc = element[config.descIndex]
-        matchedKeys = matchRegexes(categoryMap.keys(), desc)
+        amount = float(element[config.amountIndex])
+        if config.spendingNegative:
+            amount = amount * -1
+        spendList.append(SpendElement(desc, amount))
+    return spendList
+        
+        
+def collateSpending(spending, categoryMap ):
+    spendingMap = {}
+    for spend in spending:
+        matchedKeys = list(matchRegexes(categoryMap.keys(), spend.desc))
         if len(matchedKeys) == 0:
             matchedKeys.append("Unknown")
         if len(matchedKeys) == 1:
@@ -24,9 +34,17 @@ def ParseSpending(dataFile, categoryMap, configs, dataType):
             if category not in spendingMap.keys():
                 spendingMap[category] = 0
             currentSpend= spendingMap[category]
-            spendingMap[category] = currentSpend + float(element[config.amountIndex])
+            spendingMap[category] = currentSpend + float(spend.amount)
         elif len(matchedKeys) > 1:
             print("Too many matching keys - cannot put into bucket: " + matchedKeys)
 
     for key,value in spendingMap.items():
         print(key + " " + str(value))
+
+
+
+class SpendElement:
+    
+    def __init__(self, desc, amount):
+        self.desc = desc
+        self.amount = amount
