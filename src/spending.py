@@ -4,7 +4,7 @@ Created on 12 Aug 2017
 @author: Tim Barton
 '''
 
-import dataParsers
+import src.dataParsers as dataParsers
 import re
 
 def matchRegexes(regexes, desc):
