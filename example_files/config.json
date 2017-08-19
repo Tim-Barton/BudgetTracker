@@ -1,26 +1,29 @@
 {
   "Categories": [
-    {"Category": "Food",
+    {
+      "Category": "Food",
       "Regexes": [
         "The Food Shop",
         "Bob's Burgers"
       ]
     },
-    {"Category": "Spending",
+    {
+      "Category": "Spending",
       "Regexes": [
         "Hobby Shop",
         "Games Shop"
       ]
     },
-    {"Category": "Clothes",
-     "Regexes": [
+    {
+      "Category": "Clothes",
+      "Regexes": [
         "High End Fashion",
         "OpShop"
       ]
     }
   ],
   "Configuration": {
-    "CSV" : {
+    "CSV": {
       "AmountIndex": 0,
       "DescriptionIndex": 1,
       "SpendingIsNegative": true

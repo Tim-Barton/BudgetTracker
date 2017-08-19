@@ -3,7 +3,8 @@
 ```
 {  
 "Categories": [  
-  {"Category": <name of Category>, 
+  {
+    "Category": <name of Category>, 
       "Regexes": [  
         <python re module compatible search strings>,  
         ...  
@@ -12,7 +13,7 @@
     .....
   ],
   "Configuration": {
-    "CSV" : {
+    "CSV": {
       "AmountIndex": <0 indexed int of column in data file for amount>,
       "DescriptionIndex": <0 indexed int of column in data file for description>,
       "SpendingIsNegative": <true/false depending on how your spend file denotes spent money>
