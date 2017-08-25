@@ -23,10 +23,11 @@
     }
   ],
   "Configuration": {
-    "CSV": {
+    "Spendfile": {
       "AmountIndex": 0,
       "DescriptionIndex": 1,
-      "SpendingIsNegative": true
+      "SpendingIsNegative": true,
+      "DataType":"CSV"
     }
   }
 }

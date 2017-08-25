@@ -10,9 +10,10 @@ import re
 def matchRegexes(regexes, desc):
     return filter(lambda x: re.match(x, desc) is not None, regexes)
 
-def parseSpending(dataFile, configs, dataType):
-    parser = dataParsers.parsers[dataType](dataFile)
-    config = configs[dataType]
+def parseSpending(dataFile, configs, dataFileType):
+    config = configs[dataFileType]
+    parser = dataParsers.parsers[config.dataType](dataFile)
+    
     spendList = []
     for element in parser:
         desc = element[config.descIndex]
@@ -26,11 +27,11 @@ def parseSpending(dataFile, configs, dataType):
 def collateSpending(spending, categoryMap ):
     spendingMap = {}
     for spend in spending:
-        matchedKeys = list(matchRegexes(categoryMap.keys(), spend.desc))
+        matchedKeys = list(matchRegexes(categoryMap.getRegexesAsList(), spend.desc))
         if len(matchedKeys) == 0:
             matchedKeys.append("Unknown")
         if len(matchedKeys) == 1:
-            category = categoryMap[matchedKeys[0]]
+            category = categoryMap.getCategoryFromRegex(matchedKeys[0])
             if category not in spendingMap.keys():
                 spendingMap[category] = 0
             currentSpend= spendingMap[category]

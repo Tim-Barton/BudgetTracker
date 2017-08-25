@@ -5,36 +5,28 @@ Created on 10 Aug 2017
 '''
 import json
 
+
 def ParseConfig( config):
     configJson = json.loads(config)
     
-    categoryMap = {}
-    configCategoryList = configJson["Categories"]
-    for category in configCategoryList:
-        for regex in category["Regexes"]:
-            categoryMap[regex] = category["Category"]
-            
+    categoriesJson = {}
+    if "Categories" in configJson.keys():
+        categoriesJson = configJson["Categories"]
+    
+    categoryManager = CategoryManager(categoriesJson)
     
     dataConfigs = {}
-    dataConfigJson = configJson["Configuration"]
-    for key, value in dataConfigJson.items():
-        dataConfigs[key] = DataFileConfig(value) 
-    return categoryMap, dataConfigs
+    if "Configuration" in configJson.keys():
+        dataConfigJson = configJson["Configuration"]
+        for key, value in dataConfigJson.items():
+            dataConfigs[key] = DataFileConfig(value) 
+    return categoryManager, dataConfigs
 
 
-def WriteConfig(categoryMap, dataConfigs):
+def WriteConfig(categoryManager, dataConfigs):
     config = {}
-    configCategoryMap = {}
-    for regex, category in categoryMap.items():
-        if category not in configCategoryMap.keys():
-            newDict = {}
-            newDict["Category"] = category
-            newDict["Regexes"]= []
-            configCategoryMap[category] = newDict
-        categoryHandler = configCategoryMap[category]
-        regexList = categoryHandler["Regexes"]
-        regexList.append(regex)
-    config["Categories"] = list(configCategoryMap.values())
+    
+    config["Categories"] = categoryManager.dump()
 
     dataConfigJson = {}
     for key, value in dataConfigs.items():
@@ -46,11 +38,48 @@ def WriteConfig(categoryMap, dataConfigs):
     return json.dumps(config, indent=2)
     
     
+class CategoryManager:
+    def __init__(self, inputCategories):
+        self.__categoriesList = []
+        if inputCategories is not None:
+            for category in inputCategories:
+                name = category["Category"]
+                regexes = category["Regexes"]
+                self.__categoriesList.append(Category(name, regexes))
+    
+    def dump(self):
+        returnList = []
+        for category in self.__categoriesList:
+            thisDict = {}
+            thisDict["Category"] = category.name
+            thisDict["Regexes"] = category.getRegexes()
+            returnList.append(thisDict)
+        return returnList
         
+    def __getRegexes(self):
+        return list(map(lambda x: x.regexes, self.__categoriesList))
+    
+    def __getCategories(self):
+        return list(map(lambda x: x.name, self.__categoriesList))
         
-
-
-class DataFileConfig():
+    def getRegexesAsList(self):
+        return [regex for regexes in self.__getRegexes() for regex in regexes]
+    
+    def getCategoryFromRegex(self, regex):
+        return list(filter(lambda x: regex in x.regexes, self.__categoriesList))[0].name
+    
+class Category:
+    def __init__(self, name, regexes):
+        self.name = name
+        self.regexes = set(regexes)
+        
+    def addRegex(self, regex):
+        self.regexes.add(regex)
+        
+    def getRegexes(self):
+        return list(self.regexes)
+    
+class DataFileConfig:
     '''
     classdocs
     '''
@@ -59,11 +88,13 @@ class DataFileConfig():
         self.amountIndex = params["AmountIndex"]
         self.descIndex = params["DescriptionIndex"]
         self.spendingNegative = params["SpendingIsNegative"]
+        self.dataType = params["DataType"]
         
     def dump(self):
         outDict = {}
         outDict["AmountIndex"] = self.amountIndex
         outDict["DescriptionIndex"] = self.descIndex
         outDict["SpendingIsNegative"] = self.spendingNegative
+        outDict["DataType"] = self.dataType
         return outDict
         
