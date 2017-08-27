@@ -45,7 +45,9 @@ class CategoryManager:
             for category in inputCategories:
                 name = category["Category"]
                 regexes = category["Regexes"]
-                self.__categoriesList.append(Category(name, regexes))
+                self.addCategory(name)
+                for regex in regexes:
+                    self.addRegexToCategory(name, regex)
     
     def dump(self):
         returnList = []
@@ -55,23 +57,32 @@ class CategoryManager:
             thisDict["Regexes"] = category.getRegexes()
             returnList.append(thisDict)
         return returnList
-        
-    def __getRegexes(self):
-        return list(map(lambda x: x.regexes, self.__categoriesList))
     
-    def __getCategories(self):
-        return list(map(lambda x: x.name, self.__categoriesList))
+    def addCategory(self,name):
+        if name not in self.getCategoryNames():
+            self.__categoriesList.append(Category(name))
+        
+        
+    def addRegexToCategory(self, categoryName, regex):
+        list(filter(lambda x: x.name == categoryName, self.__categoriesList))[0].addRegex(regex)
+        
+    def getRegexes(self):
+        return map(lambda x: x.regexes, self.__categoriesList)
+    
+    def getCategoryNames(self):
+        return map(lambda x: x.name, self.__categoriesList)
         
     def getRegexesAsList(self):
-        return [regex for regexes in self.__getRegexes() for regex in regexes]
+        return [regex for regexes in self.getRegexes() for regex in regexes]
     
+    #returns the first category that has the appropriate regex
     def getCategoryFromRegex(self, regex):
         return list(filter(lambda x: regex in x.regexes, self.__categoriesList))[0].name
     
 class Category:
-    def __init__(self, name, regexes):
+    def __init__(self, name):
         self.name = name
-        self.regexes = set(regexes)
+        self.regexes = set([])
         
     def addRegex(self, regex):
         self.regexes.add(regex)
