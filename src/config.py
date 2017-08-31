@@ -34,13 +34,14 @@ def WriteConfig(categoryManager, dataConfigs):
         
     config["Configuration"] = dataConfigJson
     
-    print(config)
     return json.dumps(config, indent=2)
     
     
 class CategoryManager:
     def __init__(self, inputCategories):
         self.__categoriesList = []
+        self.addCategory("Unknown")
+        self.addRegexToCategory("Unknown", "Unknown")
         if inputCategories is not None:
             for category in inputCategories:
                 name = category["Category"]
@@ -77,6 +78,7 @@ class CategoryManager:
     
     #returns the first category that has the appropriate regex
     def getCategoryFromRegex(self, regex):
+        #print(regex)
         return list(filter(lambda x: regex in x.regexes, self.__categoriesList))[0].name
     
 class Category:
