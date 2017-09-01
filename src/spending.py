@@ -43,7 +43,7 @@ def collateSpending(spending, categoryMap ):
             currentSpend= spendingMap[category]
             spendingMap[category] = currentSpend + float(spend.amount)
         elif len(matchedKeys) > 1:
-            print("Too many matching keys - cannot put into bucket: " + matchedKeys)
+            print("Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
 
     for key,value in spendingMap.items():
         print(key + " " + str(value))
