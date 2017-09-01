@@ -6,6 +6,7 @@ Created on 12 Aug 2017
 
 import src.dataParsers as dataParsers
 import re
+from decimal import *
 
 def matchRegexes(regexes, desc):
     return filter(lambda x: re.match(x, desc) is not None, regexes)
@@ -19,7 +20,7 @@ def parseSpending(dataFile, configs, dataFileType):
     for element in parser:
         #print(element)
         desc = element[config.descIndex]
-        amount = float(element[config.amountIndex])
+        amount = Decimal(element[config.amountIndex])
         #print("{} {}".format(desc, str(amount)))
         if config.spendingNegative and amount < 0:
             amount = amount * -1
@@ -41,7 +42,7 @@ def collateSpending(spending, categoryMap ):
             if category not in spendingMap.keys():
                 spendingMap[category] = 0
             currentSpend= spendingMap[category]
-            spendingMap[category] = currentSpend + float(spend.amount)
+            spendingMap[category] = currentSpend + Decimal(spend.amount)
         elif len(matchedKeys) > 1:
             print("Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
 
