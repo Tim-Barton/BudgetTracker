@@ -64,13 +64,16 @@ class CategoryManager:
             self.__categoriesList.append(Category(name))
 
     def addRegexToCategory(self, categoryName, regex):
-        list(filter(lambda x: x.name == categoryName, self.__categoriesList))[0].addRegex(regex)
+        # list(filter(lambda x: x.name == categoryName, self.__categoriesList))[0].addRegex(regex)
+        [x for x in self.__categoriesList if x.name == categoryName][0].addRegex(regex)
 
     def getRegexes(self):
-        return map(lambda x: x.regexes, self.__categoriesList)
+        # return map(lambda x: x.regexes, self.__categoriesList)
+        return [x.regexes for x in self.__categoriesList]
 
     def getCategoryNames(self):
-        return map(lambda x: x.name, self.__categoriesList)
+        # return map(lambda x: x.name, self.__categoriesList)
+        return [x.name for x in self.__categoriesList]
 
     def getRegexesAsList(self):
         return [regex for regexes in self.getRegexes() for regex in regexes]
@@ -78,7 +81,8 @@ class CategoryManager:
     # returns the first category that has the appropriate regex
     def getCategoryFromRegex(self, regex):
         # print(regex)
-        return list(filter(lambda x: regex in x.regexes, self.__categoriesList))[0].name
+        # return list(filter(lambda x: regex in x.regexes, self.__categoriesList))[0].name
+        return [x.name for x in self.__categoriesList if regex in x.regexes][0]
 
 
 class Category:
