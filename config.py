@@ -66,8 +66,7 @@ if __name__ == '__main__':
             configJson = "{}"
         categoryManager, dataConfigs = config.ParseConfig(configJson)
 
-        if len(list(categoryManager.getCategoryNames())) == 0:
-            SetupCategories(categoryManager)
+        SetupCategories(categoryManager)
 
         with open(args.dataFile, 'r') as dataFile:
             if len(dataConfigs) == 0:
