@@ -75,13 +75,9 @@ if __name__ == '__main__':
                 dataFileType = list(dataConfigs.keys())[0]
             else:
                 dataFileType = WhichDataFileType(dataConfigs)
-            # print(dataFileType)
             spendList = spending.parseSpending(dataFile, dataConfigs, dataFileType)
-            # print(spendList)
             for spend in spendList:
-                # print(spend.desc)
                 matchedKeys = list(spending.matchRegexes(categoryManager.getRegexesAsList(), spend.desc))
-                # print(matchedKeys)
                 if len(matchedKeys) == 0:
                     ConfigureCategoryRegex(categoryManager, spend.desc)
                     saveConfig(dataConfigs, categoryManager)

@@ -15,15 +15,12 @@ def matchRegexes(regexes, desc):
 
 def parseSpending(dataFile, configs, dataFileType):
     config = configs[dataFileType]
-    # print(config.dataType)
     parser = dataParsers.parsers[config.dataType](dataFile)
 
     spendList = []
     for element in parser:
-        # print(element)
         desc = element[config.descIndex]
         amount = Decimal(element[config.amountIndex])
-        # print("{} {}".format(desc, str(amount)))
         if config.spendingNegative and amount < 0:
             amount = amount * -1
             spendList.append(SpendElement(desc, amount))
