@@ -6,31 +6,33 @@ Created on 12 Aug 2017
 
 import src.dataParsers as dataParsers
 import re
-from decimal import *
+from decimal import Decimal
+
 
 def matchRegexes(regexes, desc):
     return filter(lambda x: re.match(x, desc) is not None, regexes)
 
+
 def parseSpending(dataFile, configs, dataFileType):
     config = configs[dataFileType]
-    #print(config.dataType)
+    # print(config.dataType)
     parser = dataParsers.parsers[config.dataType](dataFile)
-    
+
     spendList = []
     for element in parser:
-        #print(element)
+        # print(element)
         desc = element[config.descIndex]
         amount = Decimal(element[config.amountIndex])
-        #print("{} {}".format(desc, str(amount)))
+        # print("{} {}".format(desc, str(amount)))
         if config.spendingNegative and amount < 0:
             amount = amount * -1
             spendList.append(SpendElement(desc, amount))
         elif (not config.spendingNegative) and amount > 0:
-            spendList.append(SpendElement(desc,amount))
+            spendList.append(SpendElement(desc,  amount))
     return spendList
-        
-        
-def collateSpending(spending, categoryMap ):
+
+
+def collateSpending(spending, categoryMap):
     spendingMap = {}
     for spend in spending:
         matchedKeys = list(matchRegexes(categoryMap.getRegexesAsList(), spend.desc))
@@ -41,18 +43,17 @@ def collateSpending(spending, categoryMap ):
             category = categoryMap.getCategoryFromRegex(matchedKeys[0])
             if category not in spendingMap.keys():
                 spendingMap[category] = 0
-            currentSpend= spendingMap[category]
+            currentSpend = spendingMap[category]
             spendingMap[category] = currentSpend + Decimal(spend.amount)
         elif len(matchedKeys) > 1:
             print("Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
 
-    for key,value in spendingMap.items():
+    for key, value in spendingMap.items():
         print(key + " " + str(value))
 
 
-
 class SpendElement:
-    
+
     def __init__(self, desc, amount):
         self.desc = desc
         self.amount = amount

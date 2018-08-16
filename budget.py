@@ -6,7 +6,7 @@ Created on 9 Aug 2017
 import argparse
 import src.config as config
 import src.spending as spending
-#from src.config import WriteConfig
+# from src.config import WriteConfig
 
 if __name__ == '__main__':
 
@@ -23,8 +23,5 @@ if __name__ == '__main__':
     spendList = spending.parseSpending(dataFile, configs, "Spendfile")
     spending.collateSpending(spendList, categoryManager)
 
-    #with open('test.txt', 'w') as outFile:
+    # with open('test.txt', 'w') as outFile:
     #    outFile.write(WriteConfig(categoryManager,configs))
-        
-        
-        

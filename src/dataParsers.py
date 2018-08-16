@@ -6,7 +6,9 @@ Created on 12 Aug 2017
 
 import csv
 
+
 def csvParser(dataFile):
     return csv.reader(dataFile)
 
-parsers = {"CSV":csvParser}
+
+parsers = {"CSV": csvParser}
