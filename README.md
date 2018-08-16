@@ -37,3 +37,16 @@ No other Python libraries are currently required.
 * Run with:  
 ```$ python budget.py -c examples_files/config.json -d examples_files/data.csv```  
 replacing the examples_files with the path to your real data as appropriate
+
+## Config Creator 
+The Budget Tracker currently contains a standalone utility to help create and manage configuration file - inventively called 'config.py'
+In the future this feature set will be rolled into the main BudgetTracker program.
+
+###  Running
+
+```$ python config.py -c myConfigFile.json -d sampleDataFile.csv```
+myConfigFile doesn't need to exist, but if it does it will be read in, allowing the user to edit an existing configuration file. Note this file will be overwritten on exit - i.e. there is no "save" or undo functionality currently.
+The sampleDataFile should be a real Spend file that you intend to use with the main BudgetTracker program, as the Config Creater uses this to prompt you in creating appropriate Regexes for the categories
+
+### Notes
+The Config Creator currently doesn't help you set up the section of the Configuration file regarding the dataType of the Spend File, you will need to do this manually prior to running the Config Creator
