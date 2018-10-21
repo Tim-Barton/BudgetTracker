@@ -5,16 +5,16 @@ Created on 27 Aug 2017
 '''
 
 import argparse
-import src.config as config
+import src.settings as settings
 import src.spending as spending
 
 
-def saveConfig(dataConfigs, categoryManager):
-    with open(args.configFile, 'w') as configFile:
-        configFile.write(config.WriteConfig(categoryManager, dataConfigs))
+def saveSettings(datasettings, categoryManager):
+    with open(args.settingsFile, 'w') as settingsFile:
+        settingsFile.write(settings.WriteSettings(categoryManager, datasettings))
 
 
-def SetUpDataConfigs(dataConfigs, dataFile):
+def SetUpDatasettings(datasettings, dataFile):
     pass
     #repLine = dataFile.read_line()
     #print("This is a line from your data file")
@@ -22,7 +22,7 @@ def SetUpDataConfigs(dataConfigs, dataFile):
     #print("Please tell us what type of data it is from the following")
 
 
-def WhichDataFileType(dataConfigs):
+def WhichDataFileType(datasettings):
     pass
 
 
@@ -55,29 +55,29 @@ def ConfigureCategoryRegex(categoryManager, regex):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Createa config using a spending file as source")
-    parser.add_argument('-c', dest="configFile")
+    parser.add_argument('-c', dest="settingsFile")
     parser.add_argument('-d', dest="dataFile")
 
     args = parser.parse_args()
 
-    with open(args.configFile, 'r') as configFile:
-        configJson = configFile.read()
-        if configJson == "":
-            configJson = "{}"
-        categoryManager, dataConfigs = config.ParseConfig(configJson)
+    with open(args.settingsFile, 'r') as settingsFile:
+        settingsJson = settingsFile.read()
+        if settingsJson == "":
+            settingsJson = "{}"
+        categoryManager, datasettings = settings.ParseSettings(settingsJson)
 
         SetupCategories(categoryManager)
 
         with open(args.dataFile, 'r') as dataFile:
-            if len(dataConfigs) == 0:
-                SetUpDataConfigs(dataConfigs, dataFile)
-            elif len(dataConfigs) == 1:
-                dataFileType = list(dataConfigs.keys())[0]
+            if len(datasettings) == 0:
+                SetUpDatasettings(datasettings, dataFile)
+            elif len(datasettings) == 1:
+                dataFileType = list(datasettings.keys())[0]
             else:
-                dataFileType = WhichDataFileType(dataConfigs)
-            spendList = spending.parseSpending(dataFile, dataConfigs, dataFileType)
+                dataFileType = WhichDataFileType(datasettings)
+            spendList = spending.parseSpending(dataFile, datasettings, dataFileType)
             for spend in spendList:
                 matchedKeys = list(spending.matchRegexes(categoryManager.getRegexesAsList(), spend.desc))
                 if len(matchedKeys) == 0:
                     ConfigureCategoryRegex(categoryManager, spend.desc)
-                    saveConfig(dataConfigs, categoryManager)
+                    saveSettings(datasettings, categoryManager)

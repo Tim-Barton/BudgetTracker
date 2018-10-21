@@ -13,18 +13,18 @@ def matchRegexes(regexes, desc):
     return filter(lambda x: re.match(x, desc) is not None, regexes)
 
 
-def parseSpending(dataFile, configs, dataFileType):
-    config = configs[dataFileType]
-    parser = dataParsers.parsers[config.dataType](dataFile)
+def parseSpending(dataFile, settingsList, dataFileType):
+    settings = settingsList[dataFileType]
+    parser = dataParsers.parsers[settings.dataType](dataFile)
 
     spendList = []
     for element in parser:
-        desc = element[config.descIndex]
-        amount = Decimal(element[config.amountIndex])
-        if config.spendingNegative and amount < 0:
+        desc = element[settings.descIndex]
+        amount = Decimal(element[settings.amountIndex])
+        if settings.spendingNegative and amount < 0:
             amount = amount * -1
             spendList.append(SpendElement(desc, amount))
-        elif (not config.spendingNegative) and amount > 0:
+        elif (not settings.spendingNegative) and amount > 0:
             spendList.append(SpendElement(desc,  amount))
     return spendList
 
