@@ -17,7 +17,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     settingsFile = open(args.settingsFile)
-    categoryManager, settingss = settings.ParseSettings(settingsFile.read())
+    categoryManager, settings = settings.ParseSettings(settingsFile.read())
 
     dataFile = open(args.dataFile)
     spendList = spending.parseSpending(dataFile, settings, "Spendfile")

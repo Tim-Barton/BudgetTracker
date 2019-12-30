@@ -6,7 +6,7 @@ Created on 10 Aug 2017
 import json
 
 
-def ParseConfig(config):
+def ParseSettings(config):
     configJson = json.loads(config)
 
     categoriesJson = {}
@@ -23,7 +23,7 @@ def ParseConfig(config):
     return categoryManager, dataConfigs
 
 
-def WriteConfig(categoryManager, dataConfigs):
+def WriteSettings(categoryManager, dataConfigs):
     config = {}
 
     config["Categories"] = categoryManager.dump()

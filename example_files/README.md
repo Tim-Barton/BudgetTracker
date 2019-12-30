@@ -13,10 +13,11 @@
     .....
   ],
   "Configuration": {
-    "CSV": {
+    "Spendfile": {
       "AmountIndex": <0 indexed int of column in data file for amount>,
       "DescriptionIndex": <0 indexed int of column in data file for description>,
       "SpendingIsNegative": <true/false depending on how your spend file denotes spent money>
+      "DataType": <CSV is the only support data type at this point in time
     }
   }
 }```
