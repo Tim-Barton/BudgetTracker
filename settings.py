@@ -5,13 +5,14 @@ Created on 27 Aug 2017
 '''
 
 import argparse
-import src.settings as settings
+import src.settings_handler as settings
 import src.spending as spending
 
 
 def saveSettings(datasettings, categoryManager):
     with open(args.settingsFile, 'w') as settingsFile:
-        settingsFile.write(settings.WriteSettings(categoryManager, datasettings))
+        settingsFile.write(settings.WriteSettings(
+            categoryManager, datasettings))
 
 
 def SetUpDatasettings(datasettings, dataFile):
@@ -54,7 +55,8 @@ def ConfigureCategoryRegex(categoryManager, regex):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Createa config using a spending file as source")
+    parser = argparse.ArgumentParser(
+        description="Createa config using a spending file as source")
     parser.add_argument('-c', dest="settingsFile")
     parser.add_argument('-d', dest="dataFile")
 
@@ -75,9 +77,11 @@ if __name__ == '__main__':
                 dataFileType = list(datasettings.keys())[0]
             else:
                 dataFileType = WhichDataFileType(datasettings)
-            spendList = spending.parseSpending(dataFile, datasettings, dataFileType)
+            spendList = spending.parseSpending(
+                dataFile, datasettings, dataFileType)
             for spend in spendList:
-                matchedKeys = list(spending.matchRegexes(categoryManager.getRegexesAsList(), spend.desc))
+                matchedKeys = list(spending.matchRegexes(
+                    categoryManager.getRegexesAsList(), spend.desc))
                 if len(matchedKeys) == 0:
                     ConfigureCategoryRegex(categoryManager, spend.desc)
                     saveSettings(datasettings, categoryManager)

@@ -10,7 +10,7 @@ from decimal import Decimal
 
 
 def matchRegexes(regexes, desc):
-    return filter(lambda x: re.match(x, desc) is not None, regexes)
+    return filter(lambda x: re.search(x, desc) is not None, regexes)
 
 
 def parseSpending(dataFile, settingsList, dataFileType):

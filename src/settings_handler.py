@@ -4,6 +4,7 @@ Created on 10 Aug 2017
 @author: Tim Barton
 '''
 import json
+import re
 
 
 def ParseSettings(config):
@@ -59,12 +60,13 @@ class CategoryManager:
             returnList.append(thisDict)
         return returnList
 
-    def addCategory(self,name):
+    def addCategory(self, name):
         if name not in self.getCategoryNames():
             self.__categoriesList.append(Category(name))
 
     def addRegexToCategory(self, categoryName, regex):
-        [x for x in self.__categoriesList if x.name == categoryName][0].addRegex(regex)
+        [x for x in self.__categoriesList if x.name
+            == categoryName][0].addRegex(regex)
 
     def getRegexes(self):
         return [x.regexes for x in self.__categoriesList]
@@ -86,7 +88,7 @@ class Category:
         self.regexes = set([])
 
     def addRegex(self, regex):
-        self.regexes.add(regex)
+        self.regexes.add(re.escape(regex))
 
     def getRegexes(self):
         return list(self.regexes)
