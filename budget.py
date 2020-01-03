@@ -4,13 +4,14 @@ Created on 9 Aug 2017
 @author: Tim Barton
 '''
 import argparse
-import src.settings as settings
+import src.settings_handler as settings
 import src.spending as spending
 # from src.config import WriteConfig
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description="Track spending agaisnt a defined budget")
+    parser = argparse.ArgumentParser(
+        description="Track spending agaisnt a defined budget")
     parser.add_argument('-c', dest="settingsFile")
     parser.add_argument('-d', dest="dataFile")
 
