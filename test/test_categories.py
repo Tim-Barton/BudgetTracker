@@ -4,7 +4,6 @@ from src import categories
 
 simpleRegexString = "abc"
 complexRegexString = "ab*bc*cd*"
-complexRegexStringEsc = "ab\*bc\*cd\*"
 
 
 class TestCategory(unittest.TestCase):
@@ -24,7 +23,7 @@ class TestCategory(unittest.TestCase):
         self.testCat.addRegex(complexRegexString)
         postTestRegex = self.testCat.getRegexes()
         self.assertNotEqual(len(preTestRegex), len(postTestRegex))
-        self.assertTrue(complexRegexStringEsc in postTestRegex)
+        self.assertTrue(complexRegexString in postTestRegex)
 
 
 categorySetupData = """[{"Category": "Test",

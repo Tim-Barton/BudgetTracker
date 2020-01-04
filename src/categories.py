@@ -51,7 +51,7 @@ class Category:
         self.regexes = set([])
 
     def addRegex(self, regex):
-        self.regexes.add(re.escape(regex))
+        self.regexes.add(regex)
 
     def getRegexes(self):
         return list(self.regexes)

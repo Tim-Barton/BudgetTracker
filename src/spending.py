@@ -11,7 +11,7 @@ from decimal import Decimal
 
 def matchRegexes(regexes, desc):
     #return filter(lambda x: re.search(x, desc) is not None, regexes)
-    return [x for x in regexes if re.search(x, desc) is not None]
+    return [re.escape(x) for x in regexes if re.search(re.escape(x), desc) is not None]
 
 
 def parseSpending(dataFile, settingsList, dataFileType):
