@@ -4,7 +4,7 @@ Created on 10 Aug 2017
 @author: Tim Barton
 '''
 import json
-import categories
+import src.categories as categories
 
 
 def ParseSettings(config):
