@@ -10,7 +10,8 @@ from decimal import Decimal
 
 
 def matchRegexes(regexes, desc):
-    return filter(lambda x: re.search(x, desc) is not None, regexes)
+    #return filter(lambda x: re.search(x, desc) is not None, regexes)
+    return [x for x in regexes if re.search(x, desc) is not None]
 
 
 def parseSpending(dataFile, settingsList, dataFileType):
@@ -32,7 +33,8 @@ def parseSpending(dataFile, settingsList, dataFileType):
 def collateSpending(spending, categoryMap):
     spendingMap = {}
     for spend in spending:
-        matchedKeys = list(matchRegexes(categoryMap.getRegexesAsList(), spend.desc))
+        matchedKeys = matchRegexes(
+            categoryMap.getRegexesAsList(), spend.desc)
         if len(matchedKeys) == 0:
             matchedKeys.append("Unknown")
             print("Unknown regex: {}".format(spend.desc))
@@ -43,7 +45,8 @@ def collateSpending(spending, categoryMap):
             currentSpend = spendingMap[category]
             spendingMap[category] = currentSpend + Decimal(spend.amount)
         elif len(matchedKeys) > 1:
-            print("Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
+            print(
+                "Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
 
     for key, value in spendingMap.items():
         print(key + " " + str(value))

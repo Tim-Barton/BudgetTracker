@@ -80,8 +80,8 @@ if __name__ == '__main__':
             spendList = spending.parseSpending(
                 dataFile, datasettings, dataFileType)
             for spend in spendList:
-                matchedKeys = list(spending.matchRegexes(
-                    categoryManager.getRegexesAsList(), spend.desc))
+                matchedKeys = spending.matchRegexes(
+                    categoryManager.getRegexesAsList(), spend.desc)
                 if len(matchedKeys) == 0:
                     ConfigureCategoryRegex(categoryManager, spend.desc)
                     saveSettings(datasettings, categoryManager)
