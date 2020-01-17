@@ -7,6 +7,7 @@ Created on 27 Aug 2017
 import argparse
 import src.settings_handler as settings
 import src.spending as spending
+import src.ui.cli as ui
 
 
 def saveSettings(datasettings, categoryManager):
@@ -27,31 +28,11 @@ def WhichDataFileType(datasettings):
     pass
 
 
-def PromptForCategory(categoryManager):
-    print("Your currently configured Categories are:")
-    for category in categoryManager.getCategoryNames():
-        print(category)
-    return input("Please enter another desired Category or 'none' to complete this section:\n")
-
-
 def SetupCategories(categoryManager):
-    userInput = PromptForCategory(categoryManager)
-    while userInput.lower() != "none":
+    userInput = ui.PromptForNewCategory(categoryManager)
+    while userInput.lower() != "":
         categoryManager.addCategory(userInput)
-        userInput = PromptForCategory(categoryManager)
-
-
-def ConfigureCategoryRegex(categoryManager, regex):
-    print("Which Category does this regex belong to? {}".format(regex))
-    categories = list(categoryManager.getCategoryNames())
-    print(categories)
-    for category in categories:
-        print(category)
-    inputCategory = input()
-    while inputCategory not in categories:
-        print("Oops, not a configured Category")
-        inputCategory = input()
-    categoryManager.addRegexToCategory(inputCategory, regex)
+        userInput = ui.PromptForNewCategory(categoryManager)
 
 
 if __name__ == '__main__':
@@ -83,5 +64,5 @@ if __name__ == '__main__':
                 matchedKeys = spending.matchRegexes(
                     categoryManager.getRegexesAsList(), spend.desc)
                 if len(matchedKeys) == 0:
-                    ConfigureCategoryRegex(categoryManager, spend.desc)
+                    ui.PromptCategoryRegexRelation(categoryManager, spend.desc)
                     saveSettings(datasettings, categoryManager)
