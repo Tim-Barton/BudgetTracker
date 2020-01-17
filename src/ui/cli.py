@@ -31,3 +31,12 @@ def PromptCategoryRegexRelation(categoryManager, regex):
         categoryManager.addRegexToCategory("Unknown", regex)
     else:
         categoryManager.addRegexToCategory(category, regex)
+
+
+def PrintError(error):
+    print(error)
+
+
+def PrintFinalOutput(spendingMap):
+    for key, value in spendingMap.items():
+        print(key + " " + str(value))

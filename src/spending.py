@@ -7,10 +7,10 @@ Created on 12 Aug 2017
 import src.dataParsers as dataParsers
 import re
 from decimal import Decimal
+import src.ui.cli as ui
 
 
 def matchRegexes(regexes, desc):
-    #return filter(lambda x: re.search(x, desc) is not None, regexes)
     return [re.escape(x) for x in regexes if re.search(re.escape(x), desc) is not None]
 
 
@@ -30,26 +30,24 @@ def parseSpending(dataFile, settingsList, dataFileType):
     return spendList
 
 
-def collateSpending(spending, categoryMap):
+def collateSpending(spending, categoryManager):
     spendingMap = {}
     for spend in spending:
         matchedKeys = matchRegexes(
-            categoryMap.getRegexesAsList(), spend.desc)
+            categoryManager.getRegexesAsList(), spend.desc)
         if len(matchedKeys) == 0:
-            matchedKeys.append("Unknown")
-            print("Unknown regex: {}".format(spend.desc))
+            ui.PromptCategoryRegexRelation(categoryManager, spend.desc)
         if len(matchedKeys) == 1:
-            category = categoryMap.getCategoryFromRegex(matchedKeys[0])
+            category = categoryManager.getCategoryFromRegex(matchedKeys[0])
             if category not in spendingMap.keys():
                 spendingMap[category] = 0
             currentSpend = spendingMap[category]
             spendingMap[category] = currentSpend + Decimal(spend.amount)
         elif len(matchedKeys) > 1:
-            print(
+            ui.PrintError(
                 "Too many matching keys - cannot put into bucket: {}".format(matchedKeys))
 
-    for key, value in spendingMap.items():
-        print(key + " " + str(value))
+    ui.PrintFinalOutput(spendingMap)
 
 
 class SpendElement:
