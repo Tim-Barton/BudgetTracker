@@ -11,7 +11,7 @@ import src.ui.cli as ui
 
 
 def matchRegexes(regexes, desc):
-    return [re.escape(x) for x in regexes if re.search(re.escape(x), desc) is not None]
+    return [x for x in regexes if re.search(re.escape(x), desc) is not None]
 
 
 def parseSpending(dataFile, settingsList, dataFileType):
