@@ -35,10 +35,10 @@ No other Python libraries are currently required.
 * Clone this repository
 * Create a directory to contain your 'Spend' files and configuration file. Note that the .gitignore is set up to ignore 'realdata' so you can create this folder in the repo tree to contain your data safely.
 * Run with:  
-```$ python budget.py -c examples_files/config.json -d examples_files/data.csv```  
+```$ python budget.py -c example_files/config.json -d example_files/data.csv```  
 replacing the examples_files with the path to your real data as appropriate
 
-## Config Creator 
+## Config Creator
 The Budget Tracker currently contains a standalone utility to help create and manage configuration file - inventively called 'settings.py'
 In the future this feature set will be rolled into the main BudgetTracker program.
 

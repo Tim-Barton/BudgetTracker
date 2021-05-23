@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    volumes:
+      - type: bind
+        source: .
+        target: /data/src
+    command: python /data/src/budget.py -c /data/src/example_files/config.json -d /data/src/example_files/data.csv
+  data:
+    image: mongo
+    volumes:
+      - dataVolume:/data/db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGOUSER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGOPASSWD}
+volumes:
+  dataVolume:
